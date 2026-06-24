@@ -1,6 +1,7 @@
 const fs = require("fs");
 // new module
 const http = require("http");
+const url = require("url");
 // ----------------------------------File-----------------
 // blocking, synchronous way
 // const textIn = fs.readFileSync("./txt/input.txt", "utf-8");
@@ -29,9 +30,28 @@ const http = require("http");
 // --------------------------------Server---------------------
 // web server using node js
 const server = http.createServer((req, res) => {
-	res.end("hello from the server");
+	const pathName = req.url; // before ? mark
+
+	if (pathName === "/" || pathName === "/overview") {
+		res.end("overview page");
+	} else if (pathName === "/product") {
+		res.end("this is the product");
+	} else if (pathName === "/api") {
+
+      
+
+		res.end("API");
+	} else {
+		res.writeHead(404, {
+			"content-type": "text/html",
+			"my-own-header": "hello world",
+		});
+		res.end("<h1>Page not found</h1>");
+	}
 });
 // listen request on this URL "http://127.0.0.1:8000/"
 server.listen(8000, "127.0.0.1", () => {
-   console.log("Listen to requests on port 8000")
+	console.log("Listen to requests on port 8000");
 });
+
+// Routing with node js
