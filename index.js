@@ -28,7 +28,11 @@ const url = require("url");
 // console.log("Will read file");
 
 // --------------------------------Server---------------------
-// web server using node js
+// b1 readFileSync
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+const dataObject = JSON.parse(data);
+
+// Building a simple API
 const server = http.createServer((req, res) => {
 	const pathName = req.url; // before ? mark
 
@@ -37,21 +41,17 @@ const server = http.createServer((req, res) => {
 	} else if (pathName === "/product") {
 		res.end("this is the product");
 	} else if (pathName === "/api") {
-
-      
-
-		res.end("API");
+		res.writeHead(200, { "Content-type": "application/json" });
+		res.end(data); // send back data to browser
 	} else {
 		res.writeHead(404, {
-			"content-type": "text/html",
+			"Content-type": "text/html",
 			"my-own-header": "hello world",
 		});
 		res.end("<h1>Page not found</h1>");
 	}
 });
-// listen request on this URL "http://127.0.0.1:8000/"
+
 server.listen(8000, "127.0.0.1", () => {
 	console.log("Listen to requests on port 8000");
 });
-
-// Routing with node js
