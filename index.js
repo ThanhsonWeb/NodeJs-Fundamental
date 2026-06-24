@@ -30,19 +30,39 @@ const url = require("url");
 // --------------------------------Server---------------------
 // b1 readFileSync
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+// b1. read files
+const tempOverview = fs.readFileSync(
+	`${__dirname}/templates/template-overview.html`,
+	"utf-8",
+);
+const tempCard = fs.readFileSync(
+	`${__dirname}/templates/template-card.html`,
+	"utf-8",
+);
+const tempProduct = fs.readFileSync(
+	`${__dirname}/templates/template-product.html`,
+	"utf-8",
+);
 const dataObject = JSON.parse(data);
 
-// Building a simple API
+
+// server function (run each time user request)
 const server = http.createServer((req, res) => {
 	const pathName = req.url; // before ? mark
-
+	// Overview page
 	if (pathName === "/" || pathName === "/overview") {
 		res.end("overview page");
+
+		// Product page
 	} else if (pathName === "/product") {
 		res.end("this is the product");
+
+		// API
 	} else if (pathName === "/api") {
 		res.writeHead(200, { "Content-type": "application/json" });
 		res.end(data); // send back data to browser
+
+		// Not Found page
 	} else {
 		res.writeHead(404, {
 			"Content-type": "text/html",
