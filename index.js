@@ -60,28 +60,31 @@ const tempProduct = fs.readFileSync(
 
 const dataObject = JSON.parse(data);
 
-// server function (run each time user request)
 const server = http.createServer((req, res) => {
-	const pathName = req.url; 
-	// Overview page
-	if (pathName === "/" || pathName === "/overview") {
+	// b1 take query and pathname from this return
+	// ... query: { id: '0' }, ||   pathname: '/product',
+	const { query, pathname } = url.parse(req.url, true);
+
+	if (pathname === "/" || pathname === "/overview") {
 		res.writeHead(200, { "Content-type": "text/html" });
 
 		const cardsContent = dataObject
-			// b3:mapping dataObject 
+			// b3:mapping dataObject
 			.map((el) => replaceTemplate(tempCard, el))
 			.join("");
 		// b4 replace placeholder in tempOverview
 		const output = tempOverview.replace("{%PRODUCT_CARDS%}", cardsContent);
 
 		res.end(output);
-
-		// Product page
-	} else if (pathName === "/product") {
-		res.end("this is the product");
+	} else if (pathname === "/product") {
+		// b2
+		console.log("current id url  ", query.id);
+		const product = dataObject[query.id];
+		const output = replaceTemplate(tempProduct, product);
+		res.end(output);
 
 		// API
-	} else if (pathName === "/api") {
+	} else if (pathname === "/api") {
 		res.writeHead(200, { "Content-type": "application/json" });
 		res.end(data); // send back data to browser
 
