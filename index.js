@@ -1,7 +1,8 @@
 const fs = require("fs");
-// new module
 const http = require("http");
 const url = require("url");
+const replaceTemplate = require("./modules/replaceTemplate");
+
 // ----------------------------------File-----------------
 
 // blocking, synchronous way
@@ -30,18 +31,6 @@ const url = require("url");
 
 // --------------------------------Server---------------------
 // b1 readFileSync
-const replaceTemplate = (tempCard, el) => {
-	// b2: Replace all placeholders in the template-card  with actual product data
-	let output = tempCard.replace(/{%PRODUCTNAME%}/g, el.productName);
-	output = output.replaceAll("{%IMAGE%}", el.image);
-	output = output.replaceAll("{%PRICE%}", el.price);
-	output = output.replaceAll("{%FROM%}", el.from);
-	output = output.replaceAll("{%NUTRIENTS%}", el.nutrients);
-	output = output.replaceAll("{%QUANTITY%}", el.quantity);
-	output = output.replaceAll("{%DESCRIPTION%}", el.description);
-	output = output.replaceAll("{%ID%}", el.id);
-	return output;
-};
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
 // b1: Read templates files synchronously
