@@ -1,7 +1,11 @@
+// using module from node.js
 const fs = require("fs");
 const http = require("http");
 const url = require("url");
+// using my module
 const replaceTemplate = require("./modules/replaceTemplate");
+// using 3rd party modules
+const slugify = require("slugify");
 
 // ----------------------------------File-----------------
 
@@ -48,6 +52,9 @@ const tempProduct = fs.readFileSync(
 );
 
 const dataObject = JSON.parse(data);
+// use tool
+const slugs = dataObject.map((el) => slugify(el.productName));
+console.log(slugs);
 
 const server = http.createServer((req, res) => {
 	// b1 take query and pathname from this return
